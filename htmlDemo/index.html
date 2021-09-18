@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <input id="name" type="text" type="name" placeholder="name">
+    
+    <input id="title" type="text" type="title" placeholder="title">
+
+    <input id="price" type="text" type="price" placeholder="price">
+
+    <h1>--</h1>
+    <br>
+
+    <button id="insert">Insert</button>
+    <button id="select">Select</button>
+    <button id="update">Update</button>
+    <button id="delete">Delete</button>
+
+    <p id='p'></p>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth-compat.js"></script>
+
+    <script>
+       	const firebaseConfig = {
+			apiKey: "AIzaSyByDSo_KtBd4nNcBNx2MbN5CnI9qCTSj14",
+			authDomain: "vuetify-part2.firebaseapp.com",
+			databaseURL: "https://vuetify-part2-default-rtdb.asia-southeast1.firebasedatabase.app",
+			projectId: "vuetify-part2",
+			storageBucket: "vuetify-part2.appspot.com",
+			messagingSenderId: "722303042899",
+			appId: "1:722303042899:web:5cb22a3948f926fe544da6",
+			measurementId: "G-Z91JYWJN99"
+		};
+        const firebaseApp = firebase.initializeApp(firebaseConfig);
+		const db = firebaseApp.firestore();
+		const auth = firebaseApp.auth();
+
+
+    </script>
+    <script type="module" src="ind.js"></script>
+</body>
+</html>

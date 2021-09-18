@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<!-- Bootstrap CSS -->
+		<!--plugins-->
+		<link href="./assets/New folder/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="./assets/New folder/assets/css/bootstrap.min.css" />
+	<!-- Icons CSS -->
+	<link rel="stylesheet" href="./assets/New folder/assets/css/icons.css" />
+	<!-- App CSS -->
+	<link rel="stylesheet" href="./assets/New folder/assets/css/app.css">
+	<link rel="stylesheet" href="./a.css">
+
+</head>
+
+<body>
+	<div id='app'>
+		
+	</div>
+
+	<script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-firestore-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth-compat.js"></script>
+
+	<script>
+		const firebaseConfig = {
+			apiKey: "AIzaSyByDSo_KtBd4nNcBNx2MbN5CnI9qCTSj14",
+			authDomain: "vuetify-part2.firebaseapp.com",
+			databaseURL: "https://vuetify-part2-default-rtdb.asia-southeast1.firebasedatabase.app",
+			projectId: "vuetify-part2",
+			storageBucket: "vuetify-part2.appspot.com",
+			messagingSenderId: "722303042899",
+			appId: "1:722303042899:web:5cb22a3948f926fe544da6",
+			measurementId: "G-Z91JYWJN99"
+		};
+		const firebaseApp = firebase.initializeApp(firebaseConfig);
+		const db = firebaseApp.firestore();
+		const auth = firebaseApp.auth();
+
+
+	</script>
+	
+	<script type='module' src="./js/app.js"></script>
+
+
+	<script src="./assets/New folder/assets/js/jquery.min.js"></script>
+
+	<!--plugins-->
+	<script src="./assets/New folder/assets/plugins/simplebar/js/simplebar.min.js"></script>
+
+
+	<!-- Vector map JavaScript -->
+
+	<!-- App JS -->
+	<!-- Vector map JavaScript -->
+
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="./assets/New folder/assets/js/popper.min.js"></script>
+    <script src="./assets/New folder/assets/js/bootstrap.min.js"></script>
+</body>
+
+</html>
