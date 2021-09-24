@@ -192,7 +192,9 @@ export const updateStudent= async (student) => {
         name: student.name,
         className: student.className,
         yearOfBirth: student.yearOfBirth,
-        email: student.email
+        email: student.email,
+        attendance: student.attendance,
+        noAttendance: student.noAttendance,
     })
         .then(() => { console.log('Update Succes') })
         .catch(err => { console.log('Update Err:', err.message) })
@@ -203,4 +205,23 @@ export const deleteStudent= async (student) => {
     await db.collection('users').doc(student.id).delete()
     .then(() => { console.log('Delete Succes') })
         .catch(err => { console.log('Err Delete', err.message) })
+}
+
+
+//-----Attendance Note
+export const getNote = async (idStudent) => {
+    const arrNote = [];
+    await db.collection('attendanceNotes').doc(idStudent).get()
+        .then((doc) => {
+            if (doc.exists) {
+                arrNote=[...doc.data()]
+            }
+            else {
+                console.log('Err')
+            }
+
+        })
+
+    return arrNote;
+
 }
