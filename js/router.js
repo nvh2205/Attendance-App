@@ -35,7 +35,7 @@ router.on('/register', function () {
 
 let [inforStudent,imgStudent]=[{},{}]
 if(idUser=='FPO9ngD4KTf2VW3euMiXVOa651X2'){
-    [inforStudent,imgStudent]=[{name:'ADMIN',className:'ADMIN',email:'ADMIN',yearOfBirth:'ADMIN'},{link:''}]
+    [inforStudent,imgStudent]=[{name:'ADMIN',className:'ADMIN',email:'ADMIN',yearOfBirth:'ADMIN'},{link:'./assets/images/avatar-admin.jpg'}]
 }else{
      [inforStudent,imgStudent]= await Promise.all([selectStudent(idUser),getImgUser(idUser)]) 
 

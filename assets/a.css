@@ -602,6 +602,11 @@ body {
 }
 .clone thead, .clone tfoot{background:transparent;}
 
+.icon-active{
+	cursor: pointer;
+	color: goldenrod;
+}
+
 @media screen and (min-width: 576px) {
 	.p-tab-name {
 		display: block !important;

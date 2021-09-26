@@ -312,14 +312,16 @@ export default class RegisterScreen extends BaseComponent {
         }
 
         if (isPassed) {
-            let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.className);
+            let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.optionClass);
                 this.props.allClass[indexClassName].studyTime.map((item)=>{
                     let obj={};
                     obj.content='';
                     obj.date=item
                     data.noAttendance.push(obj);
                 })
-            register(data.email, data.password, optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
+            //console.log(data.email, data.password, data.optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
+            register(data.email, data.password, data.optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
+            //window.location.href = 'newPage.html'
             return;
         }
 

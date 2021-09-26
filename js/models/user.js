@@ -20,9 +20,12 @@ export async function register(email, password, OptionClass, yearOfBirth, name, 
             noAttendance: noAttendance,
         })
 
+        await auth.signOut();
+
         console.log('success')
     } catch (e) {
-        $('#exampleModal3').modal('show');
+        //$('#exampleModal3').modal('show');
+        console.log('error',e.message);
     }
 
 
