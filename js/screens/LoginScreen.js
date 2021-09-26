@@ -3,7 +3,7 @@ import InputWrapper from "../components/InputWrapper.js";
 
 import { logIn } from "../models/user.js";
 import { appendTo, validateEmail } from "../utils.js";
-
+import ModalWarning from "./ModalWarning.js";
 export default class LogInScreen extends BaseComponent {
 
     constructor(props) {
@@ -86,14 +86,14 @@ export default class LogInScreen extends BaseComponent {
         let $img =document.createElement('div');
         $img.classList.add('col-lg-6')
 
-        $img.innerHTML=`<img src="assets/New folder/assets/images/login-images/login-frent-img.jpg" class="card-img login-img h-100" alt="...">`
+        $img.innerHTML=`<img src="assets/images/login-images/login-frent-img.jpg" class="card-img login-img h-100" alt="...">`
         $row_gutters.appendChild($img)
 
         let $divTitle = document.createElement('div');
         $divTitle.classList.add('text-center');
 
         let $imgApp = document.createElement('img');
-        $imgApp.src = 'assets/New folder/assets/images/logo-icon.png';
+        $imgApp.src = 'assets/images/logo-icon.png';
         $imgApp.width = '80'
 
         let $titile = document.createElement('h3');
@@ -164,7 +164,7 @@ export default class LogInScreen extends BaseComponent {
 
          $logIn.innerHTML=`
             <div class="text-center mt-4">
-                <p class="mb-0">Bạn chưa có tài khoản <a href="?register">- Register</a>
+                <p class="mb-0">Bạn chưa có tài khoản <a href="/index.html#/register">- Register</a>
                 </p>
             </div>`
             $form.append($logIn);

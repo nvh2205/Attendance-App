@@ -1,7 +1,7 @@
 import BaseComponent from "../BaseComponent.js";
 import { appendTo, renderHtml } from "../utils.js";
 
-export default class Table extends BaseComponent {
+export default class TableStudent extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {}
@@ -17,6 +17,20 @@ export default class Table extends BaseComponent {
 
     render() {
 
+        //let tdElement=JSON.parse(JSON.stringify(this.props.tdElement));
+        //this.props.tdElement;
+        let tdElement =  this.props.tdElement.map((student,index)=>{
+            return JSON.parse(JSON.stringify(student));
+        
+        })
+
+        tdElement.map((student,index)=>{
+            delete student.attendance;
+            delete student.noAttendance;
+        
+        })
+
+        //console.log(this.props.tdElement)
 
         let $container = document.createElement('div');
         $container.classList.add('row', 'mt-3');
@@ -37,7 +51,7 @@ export default class Table extends BaseComponent {
         $table.appendChild($thead);
 
 
-        if (this.props.tdElement.length > 0) {
+        if (tdElement.length > 0) {
            
 
            
@@ -58,7 +72,7 @@ export default class Table extends BaseComponent {
 
 
 
-            this.props.tdElement.map((item, index) => {
+            tdElement.map((item, index) => {
 
                 let $tr_body = document.createElement('tr');
                 $tbody.appendChild($tr_body);
@@ -110,7 +124,7 @@ export default class Table extends BaseComponent {
                         // $button_update.setAttribute('data-target','#exampleModal7')
 
                         $button_update.onclick = () => {
-                            this.handleClickUpdate(item);
+                            this.handleClickUpdate(this.props.tdElement[index]);
                         }
 
                         let $i_update = document.createElement('i');
@@ -135,7 +149,7 @@ export default class Table extends BaseComponent {
 
                         $button_delete.appendChild($i_delete);
                         $button_delete.innerHTML += 'Xóa';
-                        $button_delete.onclick = () => { this.handleClickDelete(item) }
+                        $button_delete.onclick = () => { this.handleClickDelete(this.props.tdElement[index]) }
                         $td_action.appendChild($button_delete);
 
                         $tr_body.appendChild($td_action);

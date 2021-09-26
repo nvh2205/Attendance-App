@@ -189,6 +189,19 @@ body {
 	background: rgb(103 58 183 / 10%);
 }
 
+.sidebar-wrapper .metismenu p:hover,
+.sidebar-wrapper .metismenu p:focus,
+.sidebar-wrapper .metismenu p:active,
+.sidebar-wrapper .metismenu .mm-active > p {
+	color: #673ab7;
+
+	cursor: pointer;
+
+	text-decoration: none;
+
+	background: rgb(103 58 183 / 10%);
+}
+
 .menu-label {
 	padding: 20px 15px 5px 5px;
 }
@@ -336,12 +349,14 @@ body {
 	border-radius: 30px;
 }
 
-.page-content h2 {
+.title-page-content {
 	text-align: center;
 
-	margin-bottom: 50px;
+	margin-bottom: 70px;
 
 	background-color: pink;
+
+	color: #673ab7;
 }
 .btn {
 	text-transform: capitalize;
@@ -494,11 +509,12 @@ body {
   .icon-custom-comment{
 	color:yellowgreen
   }
-  .icon-active{
-	color: pink;
-  }
   .hidden-display{
 	  display: none;
+  }
+
+  .img-user{
+	width: 100%;border-radius: 5%;
   }
 /*  */
 
@@ -587,7 +603,6 @@ body {
 .clone thead, .clone tfoot{background:transparent;}
 
 @media screen and (min-width: 576px) {
-	
 	.p-tab-name {
 		display: block !important;
 	}

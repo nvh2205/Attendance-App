@@ -1,4 +1,4 @@
-export async function register(email, password, OptionClass,yearOfBirth,name) {
+export async function register(email, password, OptionClass, yearOfBirth, name, attendance, noAttendance) {
 
     try {
 
@@ -8,19 +8,21 @@ export async function register(email, password, OptionClass,yearOfBirth,name) {
         //     email: email,
         //     className: OptionClass.name,
         //     yearOfBirth:yearOfBirth
-            
+
         // })
-        
+
         await db.collection('users').doc(res.user.uid).set({
             name: name,
             email: email,
             className: OptionClass,
-            yearOfBirth:yearOfBirth
+            yearOfBirth: yearOfBirth,
+            attendance: attendance,
+            noAttendance: noAttendance,
         })
 
         console.log('success')
     } catch (e) {
-        console.log('error:', e.message)
+        $('#exampleModal3').modal('show');
     }
 
 
@@ -32,13 +34,34 @@ export async function logIn(email, password) {
         await auth.signInWithEmailAndPassword(email, password);
         console.log('success')
     } catch (e) {
-        console.log('error:', e.message)
+        $('#exampleModal3').modal('show');
     }
 
 }
 
+export async function logOut(email, password) {
+    firebase.auth().signOut().then(() => {
+        console.log('success log out');
+      }).catch((error) => {
+        console.log('error');
+      });
+}
+
 //--Get list class
 //------------Class---=--------------------------------
+
+//---add class 
+export const addClass = async (newClass) => {
+    await db.collection('classes').add({
+        name: newClass.name,
+        numberOfStudent: newClass.numberOfStudent,
+        studyTime: newClass.studyTime,
+        teacher: newClass.teacher,
+    }).then(() => { console.log('add succes') })
+        .catch(err => { console.log('error:', err.message) })
+}
+
+//---Get list class
 export const getAllClass = async () => {
     const dataAllClass = [];
     await db.collection('classes').get()
@@ -86,6 +109,7 @@ export const updateClass = async (newClass) => {
         name: newClass.name,
         teacher: newClass.teacher,
         numberOfStudent: newClass.numberOfStudent,
+        studyTime: newClass.studyTime,
     })
         .then(() => { console.log('Update Succes') })
         .catch(err => { console.log('Update Err:', err.message) })
@@ -148,7 +172,7 @@ export const deleteClass = async (deleteClass) => {
 
 
 //Get all student
-export const getAllStudent= async () => {
+export const getAllStudent = async () => {
     const dataAllStudent = [];
     await db.collection('users').get()
         .then((querySnapshot) => {
@@ -169,11 +193,11 @@ export const getAllStudent= async () => {
 
 //--get student 
 export const selectStudent = async (idStudent) => {
-    const getStudent = {}
+    let getStudent = {}
     await db.collection('users').doc(idStudent).get()
         .then((doc) => {
             if (doc.exists) {
-                const obj = { ...doc.data(), id: doc.id }
+                let obj = { ...doc.data(), id: doc.id }
                 getStudent = JSON.parse(JSON.stringify(obj));
             }
             else {
@@ -187,7 +211,8 @@ export const selectStudent = async (idStudent) => {
 }
 
 //-update student
-export const updateStudent= async (student) => {
+export const updateStudent = async (student) => {
+
     await db.collection('users').doc(student.id).update({
         name: student.name,
         className: student.className,
@@ -201,9 +226,9 @@ export const updateStudent= async (student) => {
 }
 
 //delete
-export const deleteStudent= async (student) => {
+export const deleteStudent = async (student) => {
     await db.collection('users').doc(student.id).delete()
-    .then(() => { console.log('Delete Succes') })
+        .then(() => { console.log('Delete Succes') })
         .catch(err => { console.log('Err Delete', err.message) })
 }
 
@@ -214,7 +239,7 @@ export const getNote = async (idStudent) => {
     await db.collection('attendanceNotes').doc(idStudent).get()
         .then((doc) => {
             if (doc.exists) {
-                arrNote=[...doc.data()]
+                arrNote = [...doc.data()]
             }
             else {
                 console.log('Err')
@@ -224,4 +249,59 @@ export const getNote = async (idStudent) => {
 
     return arrNote;
 
+}
+
+//Img user
+
+//add img user
+export const getImgUser = async (idUser) => {
+
+    let getImg={}
+    await db.collection('userPhotos').doc(idUser).get()
+        .then((doc) => {
+            if (doc.exists) {
+                let obj = { ...doc.data(), id: doc.id }
+                getImg = JSON.parse(JSON.stringify(obj));
+            }
+            else {
+                console.log('Err')
+            }
+
+        })
+
+    return getImg;
+}
+
+//upload storage image
+export const uploadStorageImage = async (imgName, ImgUrl, files, id) => {
+    var uploadTask = firebase.storage().ref('Images/' + imgName + ".png").put(files[0]);
+
+    await uploadTask.on('state_changed',
+        function (snapshot) {
+            var progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+        },
+        function (error) {
+            alert('err upload')
+        },
+        function () {
+            uploadTask.snapshot.ref.getDownloadURL().then(function (url) {
+                ImgUrl = url;
+
+                // firebase.database().ref('Pictures/' + imgName).set({
+                //     Name: imgName,
+                //     Link: ImgUrl
+                // })
+                db.collection('userPhotos').doc(id).set({
+                    name: imgName,
+                    link: ImgUrl
+                }).then(() => { $('#exampleModal3').modal('show'); })
+                    .catch(err => { console.log('error:', err.message) })
+
+                //alert('succes')
+
+
+
+            })
+        }
+    );
 }

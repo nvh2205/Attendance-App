@@ -4,28 +4,32 @@ export default class InputWrapper extends BaseComponent {
 
     render() {
         let $container = document.createElement('div');
-        if(this.props.label){
-           
+        if (this.props.label) {
+
             $container.classList.add('form-group');
         }
-      
-       // console.log(this.props.label)
-        
-        if(this.props.addClass){    
-            $container.className=`${this.props.addClass}`;
-        }
+
+        // console.log(this.props.label)
+
+       
 
         let $input = document.createElement('input');
         let $lable = document.createElement('lable');
         $lable.classList.add('mb-1')
-       if(this.props.label){
+        if (this.props.label) {
             $lable.innerHTML += this.props.label;
 
-       }
+        }
 
-         
-       if(this.props.addClassInput){    
-            $input.className=`${this.props.addClassInput}`;
+        if (this.props.atributes) {
+            this.props.atributes.map((item, index) => {
+                $input.setAttribute(`${item.key}`, `${item.value}`)
+            })
+        }
+
+
+        if (this.props.addClassInput) {
+            $input.className = `${this.props.addClassInput}`;
         }
 
         $input.classList.add('form-control');
@@ -35,23 +39,26 @@ export default class InputWrapper extends BaseComponent {
         //$input.oninput=this.props.oninput;
         $input.onchange = this.props.onchange;
 
-        
+        //---add class input
+        if (this.props.addClass) {
+            $container.className = `${this.props.addClass}`;
+        }
 
         let $error = document.createElement('div');
         $error.classList.add('text-danger');
-        if(this.props.error){
+        if (this.props.error) {
             $error.innerText = this.props.error;
         }
-       
-        if(this.props.label){
+
+        if (this.props.label) {
             $container.appendChild($lable);
             $container.appendChild($input);
             $container.appendChild($error);
             return $container;
         }
-       else{
-           return $input;
-       }
-       
+        else {
+            return $input;
+        }
+
     }
 }

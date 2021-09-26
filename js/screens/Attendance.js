@@ -167,7 +167,7 @@ export default class Attendance extends BaseComponent {
         $page_content_wrapper.appendChild($page_content);
 
         let $page_breadcrumb = document.createElement('div');
-        $page_breadcrumb.classList.add('page-breadcrumb', 'd-none', 'd-md-flex', 'justify-content-center', 'align-items-center', 'mb-3');
+        $page_breadcrumb.classList.add('page-breadcrumb',  'd-md-flex', 'justify-content-center', 'align-items-center', 'mb-3');
 
         $page_content.appendChild($page_breadcrumb);
 
@@ -326,23 +326,21 @@ export default class Attendance extends BaseComponent {
 
         let $div_drop_menu = document.createElement('div')
         $div_drop_menu.classList.add('dropdown-menu', 'dropdown-menu-right', 'dropdown-menu-lg-left');
-        let $a_sort_az = document.createElement('a');
-        $a_sort_az.classList.add('dropdown-item');
+        let $a_sort_az = document.createElement('p');
+        $a_sort_az.classList.add('dropdown-item','p-sort');
         $a_sort_az.innerHTML += 'TÊN : A->Z';
-        $a_sort_az.href = '#';
 
-        $a_sort_az.onclick = () => {
+        $a_sort_az.onclick=()=>{
             this.handleSort(1);
-
+            
         }
 
-        let $a_sort_za = document.createElement('a');
-        $a_sort_za.classList.add('dropdown-item');
+        let $a_sort_za = document.createElement('p');
+        $a_sort_za.classList.add('dropdown-item','p-sort');
         $a_sort_za.innerHTML += 'TÊN : Z->A';
-        $a_sort_za.href = '#';
-        $a_sort_za.onclick = () => {
+        $a_sort_za.onclick=()=>{
             this.handleSort(-1);
-
+            
         }
 
 
@@ -382,7 +380,7 @@ export default class Attendance extends BaseComponent {
 
 
         var imported = document.createElement('script');
-        imported.src = './assets/New folder/assets/js/app.js'
+        imported.src = './assets/js/app.js'
         document.body.appendChild(imported)
 
 

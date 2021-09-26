@@ -5,12 +5,6 @@ import { register, getAllClass } from "../models/user.js"
 import { appendTo, validateEmail } from "../utils.js";
 
 
-let listClass = await getAllClass();
-
-let arrClass = listClass.map((item) => {
-    return item
-})
-
 
 export default class RegisterScreen extends BaseComponent {
 
@@ -26,6 +20,8 @@ export default class RegisterScreen extends BaseComponent {
                 optionClass: 'Chọn lớp đăng kí',
                 yearOfBirth: '',
                 option: '',
+                attendance:[],
+                noAttendance:[],
 
             },
 
@@ -54,10 +50,10 @@ export default class RegisterScreen extends BaseComponent {
 
         tmpState.data[fieldName] = fieldValue.trim();
 
-        if (fieldName == 'optionClass') {
-            let index = arrClass.findIndex((item) => item.name == fieldValue)
-            tmpState.data.option = arrClass[index];
-        }
+        // if (fieldName == 'optionClass') {
+        //     let index = arrClass.findIndex((item) => item.name == fieldValue)
+        //     tmpState.data.option = arrClass[index];
+        // }
 
 
         this.setState(tmpState);
@@ -112,7 +108,7 @@ export default class RegisterScreen extends BaseComponent {
         let $img = document.createElement('div');
         $img.classList.add('col-lg-6')
 
-        $img.innerHTML = `<img src="assets/New folder/assets/images/login-images/login-frent-img.jpg" class="card-img login-img h-100" alt="...">`
+        $img.innerHTML = `<img src="assets/images/login-images/login-frent-img.jpg" class="card-img login-img h-100" alt="...">`
         $row_gutters.appendChild($img)
 
 
@@ -121,7 +117,7 @@ export default class RegisterScreen extends BaseComponent {
         $divTitle.classList.add('text-center');
 
         let $imgApp = document.createElement('img');
-        $imgApp.src = 'assets/New folder/assets/images/logo-icon.png';
+        $imgApp.src = 'assets/images/logo-icon.png';
         $imgApp.width = '80'
 
         let $titile = document.createElement('h3');
@@ -200,10 +196,10 @@ export default class RegisterScreen extends BaseComponent {
 
         let _SelectWrapper = new SelectWrapper({
             addClass: 'col-md-6',
-            label: 'Year Of Birth',
+            label: 'Choose a class',
             value: this.state.data.optionClass,
             error: this.state.errors.optionClass,
-            option: arrClass,
+            option: this.props.allClass,
             onchange: (event) => {
                 this.handleInputChange('optionClass', event.target.value);
             }
@@ -247,7 +243,7 @@ export default class RegisterScreen extends BaseComponent {
 
         $logIn.innerHTML = `
             <div class="text-center mt-4">
-                <p class="mb-0">Bạn đã có tài khoản <a href="authentication-login.html">-Login</a>
+                <p class="mb-0">Bạn đã có tài khoản <a href="/index.html#/login">-Login</a>
                 </p>
             </div>`
         $form.append($logIn);
@@ -316,7 +312,14 @@ export default class RegisterScreen extends BaseComponent {
         }
 
         if (isPassed) {
-            register(data.email, data.password, optionClass,data.yearOfBirth,data.name)
+            let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.className);
+                this.props.allClass[indexClassName].studyTime.map((item)=>{
+                    let obj={};
+                    obj.content='';
+                    obj.date=item
+                    data.noAttendance.push(obj);
+                })
+            register(data.email, data.password, optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
             return;
         }
 

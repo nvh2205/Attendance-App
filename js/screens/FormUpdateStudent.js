@@ -18,7 +18,9 @@ export default class FormUpdateStudent extends BaseComponent {
                 email:`${this.props.dataUpdate?this.props.dataUpdate.email:''}`,
                 id:`${this.props.dataUpdate?this.props.dataUpdate.id:''}`,
                 password:'',
-                confirmPassword: ''
+                confirmPassword: '',
+                attendance: this.props.dataUpdate?this.props.dataUpdate.attendance:[],
+                noAttendance:this.props.dataUpdate?this.props.dataUpdate.noAttendance:[],
 
             },
             err:{
@@ -261,8 +263,17 @@ export default class FormUpdateStudent extends BaseComponent {
             isPassed = false
         }
 
+
+
         if (isPassed) {
             if(data.id === ''){
+                let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.className);
+                this.props.allClass[indexClassName].studyTime.map((item)=>{
+                    let obj={};
+                    obj.content='';
+                    obj.date=item
+                    data.noAttendance.push(obj);
+                })
                 this.props.addStudent(data);
             }
             else{
