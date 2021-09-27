@@ -16,14 +16,38 @@ export default class Attendance extends BaseComponent {
             search: '',
             sortValue: null,
             searchValue: [],
-            allClass: this.props.allClass,
-            selectClass: this.props.allClass[1],
+            allClass: [],
+            selectClass: {},
             indexSelectClass: null,
             checkEdit: false,
-            noteAtten:''
+            noteAtten:'',
+            allStudent: [],
         }
     }
 
+    async componentDidMount() {
+        let tmpState = this.state;
+        let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
+        //let allClass= await getAllClass();
+
+       
+        tmpState.selectClass=allClass[1];
+        tmpState.allStudent=[...allStudent];
+        
+        let allClassNew=[...allClass];
+        allClassNew.map((item, index) => {
+            let listStudent = [];
+            allStudent.map((student, indexStuden) => {
+                if (student.className == item.name) {
+                    listStudent.push(student);
+    
+                }
+            })
+            item.studenInClass = listStudent;
+        })
+        tmpState.allClass=[...allClassNew];
+        this.setState(tmpState);
+    }
 
     onHandleSelectClass = (value, index) => {
         const tmpState = this.state;
@@ -361,7 +385,14 @@ export default class Attendance extends BaseComponent {
             $h4_seach.className='text-center';
             $h4_seach.innerHTML+='Không có kết quả bạn tìm :(('
             $div_col.appendChild($h4_seach)
-        }else{
+        }
+         if(this.state.selectClass == {}){
+            let $h4_seach=document.createElement('h4');
+            $h4_seach.className='text-center';
+            $h4_seach.innerHTML+='Không có kết quả bạn tìm :(('
+            $div_col.appendChild($h4_seach)
+        }
+        if(this.state.selectClass.id){
             let $table_atter = new TableAtten({
                 selectClass: this.state.selectClass,
                 //idUser: this.props.idUser,
@@ -373,6 +404,7 @@ export default class Attendance extends BaseComponent {
             });
     
             appendTo($div_col, $table_atter);
+
         }
         //...........table
         

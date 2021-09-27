@@ -17,6 +17,7 @@ export default class Table extends BaseComponent {
 
     render() {
 
+        
 
         let $container = document.createElement('div');
         $container.classList.add('row', 'mt-3');

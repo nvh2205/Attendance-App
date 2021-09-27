@@ -46,8 +46,9 @@ let $app = document.getElementById('app');
 
 window.onload = function() {
     auth.onAuthStateChanged((user) => {
-        console.log(user);
+        //console.log(user);
         if(user != null) {
+            
             router.navigate('/index');
         } else {
             router.navigate('/login');

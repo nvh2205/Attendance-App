@@ -2,7 +2,7 @@ import BaseComponent from "../BaseComponent.js";
 import InputWrapper from "../components/InputWrapper.js";
 import SelectWrapper from "../components/SelectWrapper.js";
 import { register, getAllClass } from "../models/user.js"
-import { appendTo, validateEmail } from "../utils.js";
+import { appendTo, validateEmail, date } from "../utils.js";
 
 
 
@@ -20,8 +20,8 @@ export default class RegisterScreen extends BaseComponent {
                 optionClass: 'Chọn lớp đăng kí',
                 yearOfBirth: '',
                 option: '',
-                attendance:[],
-                noAttendance:[],
+                attendance: [],
+                noAttendance: [],
 
             },
 
@@ -32,7 +32,9 @@ export default class RegisterScreen extends BaseComponent {
                 password: '',
                 confirmPassword: '',
                 optionClass: ''
-            }
+            },
+
+            allClass: [],
         };
     }
 
@@ -40,6 +42,11 @@ export default class RegisterScreen extends BaseComponent {
      * Xử lý sự kiện onchange của ô input
      */
 
+    async componentDidMount() {
+        let tmpState = this.state;
+        tmpState.allClass = await getAllClass();
+        this.setState(tmpState);
+    }
 
 
 
@@ -68,7 +75,7 @@ export default class RegisterScreen extends BaseComponent {
         let $row = document.createElement('div')
         $row.classList.add('row');
 
-
+        //console.log(this.state.data.option)
 
         let $response = document.createElement('div')
         $response.classList.add('col-12');
@@ -199,7 +206,7 @@ export default class RegisterScreen extends BaseComponent {
             label: 'Choose a class',
             value: this.state.data.optionClass,
             error: this.state.errors.optionClass,
-            option: this.props.allClass,
+            option: this.state.allClass,
             onchange: (event) => {
                 this.handleInputChange('optionClass', event.target.value);
             }
@@ -312,15 +319,22 @@ export default class RegisterScreen extends BaseComponent {
         }
 
         if (isPassed) {
-            let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.optionClass);
-                this.props.allClass[indexClassName].studyTime.map((item)=>{
-                    let obj={};
-                    obj.content='';
-                    obj.date=item
+            let indexClassName = this.state.allClass.findIndex((item) => item.name == data.optionClass);
+            let time_current = new Date();
+            time_current = time_current.getTime();
+            this.state.allClass[indexClassName].studyTime.map((item) => {
+                let time_study = new Date(item);
+                time_study = time_study.getTime();
+                if (time_study < time_current) {
+                    let obj = {};
+                    obj.content = '';
+                    obj.date = item
                     data.noAttendance.push(obj);
-                })
+                }
+
+            })
             //console.log(data.email, data.password, data.optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
-            register(data.email, data.password, data.optionClass,data.yearOfBirth,data.name,data.attendance,data.noAttendance)
+            register(data.email, data.password, data.optionClass, data.yearOfBirth, data.name, data.attendance, data.noAttendance)
             //window.location.href = 'newPage.html'
             return;
         }

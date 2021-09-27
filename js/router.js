@@ -9,7 +9,7 @@ import { appendTo } from "./utils.js";
 import ModalWarning from './screens/ModalWarning.js'
 let router = new Navigo(null, true, '#');
 
-let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()])
+//let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()])
 
 let $app = document.getElementById('app');
 
@@ -30,16 +30,17 @@ router.on('/login', function () {
 
 router.on('/register', function () {
     $app.innerHTML = '';
-    appendTo($app, new RegisterScreen({ allClass: allClass }),new ModalWarning({content:'Email đã được đăng kí'}));
+    appendTo($app, new RegisterScreen(),new ModalWarning({content:'Email đã được đăng kí'}));
 }).resolve();
 
-let [inforStudent,imgStudent]=[{},{}]
-if(idUser=='FPO9ngD4KTf2VW3euMiXVOa651X2'){
-    [inforStudent,imgStudent]=[{name:'ADMIN',className:'ADMIN',email:'ADMIN',yearOfBirth:'ADMIN'},{link:'./assets/images/avatar-admin.jpg'}]
-}else{
-     [inforStudent,imgStudent]= await Promise.all([selectStudent(idUser),getImgUser(idUser)]) 
+//-------Khai bao de truyen props info
+// let [inforStudent,imgStudent]=[{},{}]
+// if(idUser=='FPO9ngD4KTf2VW3euMiXVOa651X2'){
+//     [inforStudent,imgStudent]=[{name:'ADMIN',className:'ADMIN',email:'ADMIN',yearOfBirth:'ADMIN'},{link:'./assets/images/avatar-admin.jpg'}]
+// }else{
+//      [inforStudent,imgStudent]= await Promise.all([selectStudent(idUser),getImgUser(idUser)]) 
 
-}
+// }
 
 router.on('/index', function () {
     if (!auth.currentUser) {
@@ -49,35 +50,35 @@ router.on('/index', function () {
     
 
     $app.innerHTML = '';
-    appendTo($app, new InforStudent({inforStudent:inforStudent,imgStudent:imgStudent}),new ModalWarning({content:"Upload file successfully"}));
+    appendTo($app, new InforStudent(),new ModalWarning({content:"Upload file successfully"}));
 }).resolve();
 
 
 router.on('/list-student', function () {
     $app.innerHTML = '';
-    appendTo($app, new ListStudent({ allStudent: allStudent, idUser: idUser, allClass: allClass }),new ModalWarning({content:'Email đã được đăng kí'}));
+    appendTo($app, new ListStudent({ idUser: idUser }),new ModalWarning({content:'Email đã được đăng kí'}));
 }).resolve();
 
 
 router.on('/list-class', function () {
     $app.innerHTML = '';
-    appendTo($app, new ListClass({ allStudent: allStudent, idUser: idUser, allClass: allClass }));
+    appendTo($app, new ListClass({  idUser: idUser }));
 }).resolve();
 
 router.on('/attendance', function () {
-    let allClassNew=[...allClass];
-    allClassNew.map((item, index) => {
-        let listStudent = [];
-        allStudent.map((student, indexStuden) => {
-            if (student.className == item.name) {
-                listStudent.push(student);
+    // let allClassNew=[...allClass];
+    // allClassNew.map((item, index) => {
+    //     let listStudent = [];
+    //     allStudent.map((student, indexStuden) => {
+    //         if (student.className == item.name) {
+    //             listStudent.push(student);
 
-            }
-        })
-        item.studenInClass = listStudent;
-    })
+    //         }
+    //     })
+    //     item.studenInClass = listStudent;
+    // })
     $app.innerHTML = '';
-    appendTo($app, new Attendance({ allStudent: allStudent, idUser: idUser, allClass: allClassNew }));
+    appendTo($app, new Attendance({ idUser: idUser }));
 }).resolve();
 
 window.router = router;

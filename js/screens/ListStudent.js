@@ -6,7 +6,7 @@ import Footer from "../components/Footer.js";
 import TableStudent from "../components/TableStudent.js";
 import InputWrapper from "../components/InputWrapper.js";
 import FormUpdateStudent from "./FormUpdateStudent.js";
-import { logIn, getAllClass, updateStudent,register,deleteStudent } from "../models/user.js";
+import { getAllStudent, getAllClass, updateStudent,register,deleteStudent,addUser } from "../models/user.js";
 
 
 
@@ -20,9 +20,11 @@ export default class ListStudent_copy extends BaseComponent {
             searchValue: '',
             dataUpdate: {},
             isDisplayForm: false,
-            allStudent:this.props.allStudent,
+            allStudent:[],
+            allClass:[],
             search:'',
-            sortValue:null
+            sortValue:null,
+            rootAllStudent: []
         }
     }
 
@@ -72,7 +74,7 @@ export default class ListStudent_copy extends BaseComponent {
     }
 
     addStudent=(value)=>{
-        register(value.email,value.password, value.className,value.yearOfBirth,value.name,value.attendance,value.noAttendance);
+        addUser(value.email,value.password, value.className,value.yearOfBirth,value.name,value.attendance,value.noAttendance);
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('users').onSnapshot(snapshot => {
@@ -119,7 +121,8 @@ export default class ListStudent_copy extends BaseComponent {
         let tmpState = this.state;
 
         tmpState.search= fieldValue.trim();
-        tmpState.allStudent=this.props.allStudent
+        let rootAllStudent=tmpState.rootAllStudent
+        tmpState.allStudent=[...rootAllStudent]
         this.setState(tmpState);
         //console.log(this.state,1);
        
@@ -159,6 +162,17 @@ export default class ListStudent_copy extends BaseComponent {
         tmpState.sortValue=value;
         this.setState(tmpState);
     }
+
+    async componentDidMount() {
+        let tmpState = this.state;
+        let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
+        //let allClass= await getAllClass();
+        tmpState.allClass=[...allClass];
+        tmpState.allStudent=[...allStudent];
+        tmpState.rootAllStudent=[...allStudent];
+        this.setState(tmpState);
+    }
+
 
     render() {
         //console.log(this.state.a,'a:')
@@ -226,7 +240,7 @@ export default class ListStudent_copy extends BaseComponent {
             //Update
             $form_update = new FormUpdateStudent({
                 dataUpdate: this.state.dataUpdate,
-                allClass: this.props.allClass,
+                allClass: this.state.allClass,
                 handleUpdateStudent: this.handleUpdateStudent,
                 closeForm: this.closeForm,
                 title:'Update',
@@ -237,7 +251,7 @@ export default class ListStudent_copy extends BaseComponent {
         }
         else{
             $form_update = new FormUpdateStudent({
-                allClass: this.props.allClass,
+                allClass: this.state.allClass,
                 addStudent:this.addStudent,
                 closeForm: this.closeForm,
                 title:'Create',

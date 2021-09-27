@@ -282,6 +282,11 @@ export default class FormUpdateClass extends BaseComponent {
             isPassed = false
         }
 
+        if(data.studyTime.length == 0) {
+            isPassed = false
+            alert('Ban Phai tron lich hoc')
+        }
+
         if (isPassed) {
             if (data.id === '') {
                 this.props.addClass(data);

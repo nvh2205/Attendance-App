@@ -6,7 +6,7 @@ import Footer from "../components/Footer.js";
 import Table from "../components/Table.js";
 import InputWrapper from "../components/InputWrapper.js";
 import FormUpdateClass from "./FormUpdateClass.js";
-import { addClass,updateClass,deleteClass } from "../models/user.js";
+import { addClass,updateClass,deleteClass,getAllClass } from "../models/user.js";
 
 
 
@@ -22,9 +22,11 @@ export default class ListClass extends BaseComponent {
             dataUpdate: {},
             isDisplayForm: false,
             //allStudent:this.props.allStudent,
-            allClass: this.props.allClass,
+            allClass: [],
             search: '',
-            sortValue: null
+            sortValue: null,
+            rootAllClass:[]
+            
         }
     }
 
@@ -46,10 +48,11 @@ export default class ListClass extends BaseComponent {
                     let x = this.state
 
                     let data = snapshot.docs;
-                    x.allClass = data.map((item) => {
+                   let allClass = data.map((item) => {
                         return item.data();
                     })
-
+                    x.allClass=[...allClass];
+                    x.rootAllClass=[...allClass];
                     this.setState(x);
 
                 })
@@ -119,7 +122,8 @@ export default class ListClass extends BaseComponent {
         let tmpState = this.state;
 
         tmpState.search = fieldValue.trim();
-        tmpState.allClass = this.props.allClass
+        let rootAllClass=tmpState.rootAllClass
+        tmpState.allClass = [...rootAllClass];
         this.setState(tmpState);
         //console.log(this.state,1);
 
@@ -160,7 +164,18 @@ export default class ListClass extends BaseComponent {
         this.setState(tmpState);
     }
 
+
+    async componentDidMount() {
+        let tmpState = this.state;
+        //let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
+        let allClass= await getAllClass();
+        tmpState.allClass=[...allClass];
+        tmpState.rootAllClass=[...allClass];
+        this.setState(tmpState);
+    }
+
     render() {
+        //console.log(this.props)
         //console.log(this.state.a,'a:')
         let $container = document.createElement('div')
         $container.classList.add('wrapper')
@@ -225,7 +240,7 @@ export default class ListClass extends BaseComponent {
             //Update
             $form_update = new FormUpdateClass({
                 dataUpdate: this.state.dataUpdate,
-                allClass: this.props.allClass,
+                allClass: this.state.allClass,
                 handleUpdateClass: this.handleUpdateClass,
                 closeForm: this.closeForm,
                 title: 'Update',
@@ -236,7 +251,7 @@ export default class ListClass extends BaseComponent {
         }
         else {
             $form_update = new FormUpdateClass({
-                allClass: this.props.allClass,
+                allClass: this.state.allClass,
                 addClass: this.addClass,
                 closeForm: this.closeForm,
                 title: 'Create',

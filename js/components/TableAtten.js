@@ -20,7 +20,6 @@ export default class TableAtten extends BaseComponent {
 
     render() {
 
-        
         //let idAdmin = this.props.idUser
 
         let studenInClass = this.props.searchValue.length>0&&this.props.searchValue[0]!='No results found' ? this.props.searchValue: this.props.selectClass.studenInClass
@@ -129,6 +128,7 @@ export default class TableAtten extends BaseComponent {
 
                 })
 
+                
                 student.noAttendance.map((item) => {
                     let index = studyTime.findIndex((time) => time === item.date);
                     let $i_x = document.createElement('i');

@@ -11,19 +11,19 @@ export default class FormUpdateStudent extends BaseComponent {
         this.state = {
             // lưu dữ liệu người dùng nhập vào
 
-            data:{
-                name:`${this.props.dataUpdate?this.props.dataUpdate.name:''}`,
-                yearOfBirth:`${this.props.dataUpdate?this.props.dataUpdate.yearOfBirth:''}`,
-                className:`${this.props.dataUpdate?this.props.dataUpdate.className:'Chọn lớp đăng kí'}`,
-                email:`${this.props.dataUpdate?this.props.dataUpdate.email:''}`,
-                id:`${this.props.dataUpdate?this.props.dataUpdate.id:''}`,
-                password:'',
+            data: {
+                name: `${this.props.dataUpdate ? this.props.dataUpdate.name : ''}`,
+                yearOfBirth: `${this.props.dataUpdate ? this.props.dataUpdate.yearOfBirth : ''}`,
+                className: `${this.props.dataUpdate ? this.props.dataUpdate.className : 'Chọn lớp đăng kí'}`,
+                email: `${this.props.dataUpdate ? this.props.dataUpdate.email : ''}`,
+                id: `${this.props.dataUpdate ? this.props.dataUpdate.id : ''}`,
+                password: '',
                 confirmPassword: '',
-                attendance: this.props.dataUpdate?this.props.dataUpdate.attendance:[],
-                noAttendance:this.props.dataUpdate?this.props.dataUpdate.noAttendance:[],
+                attendance: this.props.dataUpdate ? this.props.dataUpdate.attendance : [],
+                noAttendance: this.props.dataUpdate ? this.props.dataUpdate.noAttendance : [],
 
             },
-            err:{
+            err: {
                 name: '',
                 email: '',
                 password: '',
@@ -42,70 +42,70 @@ export default class FormUpdateStudent extends BaseComponent {
         let tmpState = this.state;
 
         tmpState.data[fieldName] = fieldValue.trim();
-       
+
 
         this.setState(tmpState);
         //console.log(this.state,1);
-       
+
     }
 
-    handleClickCloseForm=()=>{
+    handleClickCloseForm = () => {
         this.props.closeForm();
     }
 
     render() {
 
-        let $card=document.createElement("div");
-        $card.className='card';
+        let $card = document.createElement("div");
+        $card.className = 'card';
 
-        let $card_body=document.createElement("div");
-        $card_body.className='card-body';
+        let $card_body = document.createElement("div");
+        $card_body.className = 'card-body';
 
         $card.appendChild($card_body);
 
-        let $div_titles=document.createElement("div");
-        $div_titles.className='d-flex justify-content-between'
-        let $h4_titles=document.createElement("h4");
-        $h4_titles.innerHTML+=`${this.props.title} Học Sinh`;
-        let $button_titles=document.createElement("button");
-        $button_titles.type="button";
-        $button_titles.className='btn btn-danger radius-20';
-        $button_titles.onclick=this.handleClickCloseForm;
-        let $i_title=document.createElement("i");
-        $i_title.className='fadeIn animated bx bx-x';
+        let $div_titles = document.createElement("div");
+        $div_titles.className = 'd-flex justify-content-between'
+        let $h4_titles = document.createElement("h4");
+        $h4_titles.innerHTML += `${this.props.title} Học Sinh`;
+        let $button_titles = document.createElement("button");
+        $button_titles.type = "button";
+        $button_titles.className = 'btn btn-danger radius-20';
+        $button_titles.onclick = this.handleClickCloseForm;
+        let $i_title = document.createElement("i");
+        $i_title.className = 'fadeIn animated bx bx-x';
 
         $button_titles.appendChild($i_title);
         $div_titles.appendChild($h4_titles);
         $div_titles.appendChild($button_titles)
 
-        let $hr=document.createElement("hr");
-        
+        let $hr = document.createElement("hr");
+
 
         $card_body.appendChild($div_titles);
         $card_body.appendChild($hr);
-        let $div_body=document.createElement("div");
+        let $div_body = document.createElement("div");
         $card_body.appendChild($div_body);
 
-        let $form=document.createElement("form");
+        let $form = document.createElement("form");
         $div_body.appendChild($form);
 
         let _name = new InputWrapper({
-            addClassInput:'form-control radius-30',
-            label:'Name--',
-            placeholder:'Name Student: ',
-            type:'text',
-            value:this.state.data.name,
-            error:this.state.err.name,
-            onchange:(event)=>{this.onChangeUpdate('name',event.target.value);},
+            addClassInput: 'form-control radius-30',
+            label: 'Name--',
+            placeholder: 'Name Student: ',
+            type: 'text',
+            value: this.state.data.name,
+            error: this.state.err.name,
+            onchange: (event) => { this.onChangeUpdate('name', event.target.value); },
         })
 
         let _yearOfBirth = new InputWrapper({
-            addClassInput:'form-control radius-30',
-            label:'yearOfBirth',
-            placeholder:'Year Of Birth: ',
-            type:'number',
-            value:this.state.data.yearOfBirth,
-            onchange:(event)=>{this.onChangeUpdate('yearOfBirth',event.target.value);},
+            addClassInput: 'form-control radius-30',
+            label: 'yearOfBirth',
+            placeholder: 'Year Of Birth: ',
+            type: 'number',
+            value: this.state.data.yearOfBirth,
+            onchange: (event) => { this.onChangeUpdate('yearOfBirth', event.target.value); },
         })
 
         let _SelectWrapper = new SelectWrapper({
@@ -119,9 +119,9 @@ export default class FormUpdateStudent extends BaseComponent {
             }
         })
 
-        
+
         let _email = new InputWrapper({
-            addClassInput:'form-control radius-30',
+            addClassInput: 'form-control radius-30',
             label: 'Email',
             placeholder: 'Email',
             type: 'email',
@@ -134,7 +134,7 @@ export default class FormUpdateStudent extends BaseComponent {
         });
 
         let _password = new InputWrapper({
-            addClassInput:'form-control radius-30',
+            addClassInput: 'form-control radius-30',
             label: 'Password',
             placeholder: 'Password',
             type: 'password',
@@ -147,7 +147,7 @@ export default class FormUpdateStudent extends BaseComponent {
         });
 
         let _confirmPassword = new InputWrapper({
-            addClassInput:'form-control radius-30',
+            addClassInput: 'form-control radius-30',
             label: 'Confirm Password',
             placeholder: 'Confirm password',
             type: 'password',
@@ -159,69 +159,69 @@ export default class FormUpdateStudent extends BaseComponent {
             }
         });
 
-        if(this.state.data.id != ''){
-            appendTo($form,_name,_yearOfBirth,_SelectWrapper);
-        }else{
-            appendTo($form,_name,_email,_password,_confirmPassword,_yearOfBirth,_SelectWrapper);
+        if (this.state.data.id != '') {
+            appendTo($form, _name, _yearOfBirth, _SelectWrapper);
+        } else {
+            appendTo($form, _name, _email, _password, _confirmPassword, _yearOfBirth, _SelectWrapper);
         }
-       
 
 
-        let $div_action=document.createElement('div');
-        $div_action.className='text-center';
+
+        let $div_action = document.createElement('div');
+        $div_action.className = 'text-center';
 
         //---Button update
-        let $button_update=document.createElement("button");
-        $button_update.className='btn btn-warning';
-        $button_update.type='submit';
-        let $i_update=document.createElement('i');
-        $i_update.className='fadeIn animated bx bx-edit-alt mr-2'
+        let $button_update = document.createElement("button");
+        $button_update.className = 'btn btn-warning';
+        $button_update.type = 'submit';
+        let $i_update = document.createElement('i');
+        $i_update.className = 'fadeIn animated bx bx-edit-alt mr-2'
 
         $button_update.appendChild($i_update);
-        $button_update.innerHTML+=`${this.props.title}`;
+        $button_update.innerHTML += `${this.props.title}`;
 
         $form.onsubmit = this.handleUpdate
 
         $div_action.appendChild($button_update);
-        $div_action.innerHTML+='&nbsp; &nbsp; &nbsp; &nbsp;'
+        $div_action.innerHTML += '&nbsp; &nbsp; &nbsp; &nbsp;'
 
 
 
         //--Button Cancel
-        let $button_cancel=document.createElement("button");
-        $button_cancel.className='btn btn-danger';
-        $button_cancel.type='button';
-        let $i_cancel=document.createElement('i');
-        $i_cancel.className='fadeIn animated bx bx-x mr-2'
+        let $button_cancel = document.createElement("button");
+        $button_cancel.className = 'btn btn-danger';
+        $button_cancel.type = 'button';
+        let $i_cancel = document.createElement('i');
+        $i_cancel.className = 'fadeIn animated bx bx-x mr-2'
         $button_cancel.appendChild($i_cancel);
-        $button_cancel.innerHTML+='Hủy Bỏ';
-        $button_cancel.onclick=()=>{
+        $button_cancel.innerHTML += 'Hủy Bỏ';
+        $button_cancel.onclick = () => {
             this.handleClickCancel();
         }
         $div_action.appendChild($button_cancel);
 
-        let $br=document.createElement('br')
+        let $br = document.createElement('br')
         $form.appendChild($br);
         $form.appendChild($div_action);
 
         return $card;
     }
 
-    handleClickCancel=()=>{
+    handleClickCancel = () => {
         this.props.clickCancel();
     }
 
-    clearForm=()=>{
-        let tmpState= this.state;
-        tmpState.data.name='';
-        tmpState.data.className='Chọn lớp đăng kí';
-        tmpState.data.yearOfBirth='';
-        tmpState.data.email='';
+    clearForm = () => {
+        let tmpState = this.state;
+        tmpState.data.name = '';
+        tmpState.data.className = 'Chọn lớp đăng kí';
+        tmpState.data.yearOfBirth = '';
+        tmpState.data.email = '';
         this.setState(tmpState);
     }
 
     handleUpdate = (event) => {
-       
+
 
 
         event.preventDefault(); // chặn chuyển hướng đến action
@@ -236,27 +236,27 @@ export default class FormUpdateStudent extends BaseComponent {
             isPassed = false
         }
 
-        if(data.id == ''){
+        if (data.id == '') {
             if (data.email == '' || !validateEmail(data.email)) {
                 errors.email = 'Invalid email';
                 isPassed = false
             }
-    
+
             if (data.password == '' || data.password.length < 6) {
                 errors.password = 'Invalid password';
                 isPassed = false
             }
-    
+
             if (data.confirmPassword == '') {
                 errors.confirmPassword = 'Invalid password confirmation';
                 isPassed = false
             }
-    
+
             if (data.password != '' && data.confirmPassword != '' && data.password != data.confirmPassword) {
                 errors.confirmPassword = 'Password confirmation is not correct';
                 isPassed = false
             }
-        } 
+        }
 
         if (data.className == 'Chọn lớp đăng kí') {
             errors.className = 'You need to choose the registration class'
@@ -266,22 +266,35 @@ export default class FormUpdateStudent extends BaseComponent {
 
 
         if (isPassed) {
-            if(data.id === ''){
-                let indexClassName=this.props.allClass.findIndex((item)=> item.name==data.className);
-                this.props.allClass[indexClassName].studyTime.map((item)=>{
-                    let obj={};
-                    obj.content='';
-                    obj.date=item
-                    data.noAttendance.push(obj);
+            if (data.id === '') {
+                let indexClassName = this.props.allClass.findIndex((item) => item.name == data.className);
+                let time_current = new Date();
+                time_current = time_current.getTime();
+                this.props.allClass[indexClassName].studyTime.map((item) => {
+                    let time_study = new Date(item);
+                    time_study = time_study.getTime();
+                    if (time_study < time_current) {
+                        let obj = {};
+                        obj.content = '';
+                        obj.date = item
+                        data.noAttendance.push(obj);
+                    }
                 })
+
+
+
+
+
+
+
                 this.props.addStudent(data);
             }
-            else{
+            else {
                 this.props.handleUpdateStudent(data);
 
             }
-           this.props.closeForm();
-           //this.clearForm();
+            this.props.closeForm();
+            //this.clearForm();
             return;
         }
 

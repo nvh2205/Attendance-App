@@ -20,11 +20,11 @@ export async function register(email, password, OptionClass, yearOfBirth, name, 
             noAttendance: noAttendance,
         })
 
-        await auth.signOut();
+        //await auth.signOut();
 
         console.log('success')
     } catch (e) {
-        //$('#exampleModal3').modal('show');
+        $('#exampleModal3').modal('show');
         console.log('error',e.message);
     }
 
@@ -172,6 +172,21 @@ export const deleteClass = async (deleteClass) => {
 //     return listStudent;
 // }
 
+//add User 
+export const addUser = async (email, password, OptionClass, yearOfBirth, name, attendance, noAttendance)=>{
+    await db.collection('users').add({
+        name: name,
+        email: email,
+        className: OptionClass,
+        yearOfBirth: yearOfBirth,
+        attendance: attendance,
+        noAttendance: noAttendance,
+    })
+    .catch( (e)=> {
+        $('#exampleModal3').modal('show');
+        console.log('error',e.message);
+    })
+}
 
 
 //Get all student

@@ -3,29 +3,62 @@ import Sidebar from "../components/Sidebar.js";
 import { appendTo } from "../utils.js";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
-import { logIn, getAllClass, getAllStudent, uploadStorageImage } from "../models/user.js"
-import {renderHtml} from "../utils.js"
+import { logIn, getAllClass, getAllStudent, uploadStorageImage, selectStudent, getImgUser } from "../models/user.js"
+import { renderHtml } from "../utils.js"
 
 export default class InforStudent extends BaseComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            urlImg: this.props.imgStudent ? this.props.imgStudent.link : '',
+            urlImg: '',
             files: [],
-            nameImg: this.props.inforStudent.id,
+            nameImg: '',
             upload: false,
+            inforStudent: {},
+            imgStudent: {},
+            idUser:''
         };
     }
 
     /**
      * Xử lý sự kiện onchange của ô input
      */
+    async componentDidMount() {
+        let tmpState = this.state;
+        let idUser = null;
+        //this.setState(tmpState);
+        await auth.onAuthStateChanged(user => {
+            if (user != null) {
+                idUser = user.uid;
+            }
+        });
+        let [inforStudent, imgStudent] = await Promise.all([selectStudent(idUser), getImgUser(idUser)])
+        if (idUser != 'FPO9ngD4KTf2VW3euMiXVOa651X2') {
+            tmpState.inforStudent = inforStudent;
+            tmpState.urlImg = imgStudent['link'] ? imgStudent['link'] : './assets/images/avatar-admin.jpg';
+            tmpState.nameImg = idUser;
+            tmpState.imgStudent = imgStudent['link'] ? imgStudent : {}
+        } else {
+            inforStudent['name'] = 'ADMIN'
+            inforStudent['className'] = 'ADMIN'
+            inforStudent['yearOfBirth'] = 'ADMIN'
+            inforStudent['email'] = 'ADMIN'
+            tmpState.inforStudent= inforStudent
+            tmpState.urlImg = imgStudent['link'] ? imgStudent['link'] : './assets/images/avatar-admin.jpg';
+        }
+        tmpState.idUser=idUser;
+        this.setState(tmpState)
+    }
+
 
 
 
     render() {
 
+        let inforStudent = this.state.inforStudent;
+        let imgStudent = this.state.imgStudent;
+        
         let $container = document.createElement('div')
         $container.classList.add('wrapper')
 
@@ -52,7 +85,7 @@ export default class InforStudent extends BaseComponent {
 
         let $h2_info = document.createElement('h2');
         $h2_info.className = 'radius-10 title-page-content';
-        $h2_info.innerHTML+='Thông Tin Học Sinh'
+        $h2_info.innerHTML += 'Thông Tin Học Sinh'
         $page_content.appendChild($h2_info);
 
         let $div_row = document.createElement('div');
@@ -92,10 +125,11 @@ export default class InforStudent extends BaseComponent {
         $button_choose_file.appendChild($i_chosse);
         $button_choose_file.innerHTML += 'Choose Photo'
 
+
         $div_button.appendChild($button_choose_file);
 
-        //chosse file
 
+        //chosse file
 
 
         let $button_up_file = document.createElement('button');
@@ -106,7 +140,9 @@ export default class InforStudent extends BaseComponent {
         $button_up_file.appendChild($i_up);
         $button_up_file.innerHTML += 'Summit Photo'
         $div_button.appendChild($button_up_file);
-        if (this.props.imgStudent.link) {
+
+
+        if (imgStudent['link']) {
             $button_choose_file.disabled = true;
             $button_up_file.disabled = true;
 
@@ -116,17 +152,30 @@ export default class InforStudent extends BaseComponent {
             }
         }
 
+        if(this.state.idUser == 'FPO9ngD4KTf2VW3euMiXVOa651X2'){
+            $button_choose_file.disabled = true;
+            $button_up_file.disabled = true;
+        }
+
 
         if (this.state.upload == false) {
             $button_up_file.onclick = () => {
+                //console.log(123)
                 this.handleClickUpFile();
-            }
+            };
         }else{
             $button_up_file.disabled = true;
 
         }
 
-    $div_row.innerHTML+=`<div class="col-12 col-lg-8">
+
+
+        let $div_info = document.createElement('div');
+        $div_info.className = 'col-12 col-lg-8';
+
+        $div_row.appendChild($div_info);
+
+        $div_info.innerHTML += `
     <div class="card radius-15">
         <div class="card-body">
 
@@ -138,7 +187,7 @@ export default class InforStudent extends BaseComponent {
 
                 </div>
                 <p class="col-12 col-lg-8" style="text-align:center; font-size:1.3rem">
-                    ${this.props.inforStudent.name}</p>
+                    ${inforStudent['name']}</p>
             </div>
             <hr>
             <div class="row">
@@ -148,7 +197,7 @@ export default class InforStudent extends BaseComponent {
 
                 </div>
                 <p class="col-12 col-lg-8" style="text-align:center; font-size:1.3rem">
-                ${this.props.inforStudent.className}</p>
+                ${inforStudent.className}</p>
             </div>
 
         </div>
@@ -164,7 +213,7 @@ export default class InforStudent extends BaseComponent {
 
                 </div>
                 <p class="col-12 col-lg-8" style="text-align:center; font-size:1.3rem">
-                ${this.props.inforStudent.yearOfBirth}</p>
+                ${inforStudent.yearOfBirth}</p>
             </div>
             <hr>
             <div class="row">
@@ -174,13 +223,13 @@ export default class InforStudent extends BaseComponent {
 
                 </div>
                 <p class="col-12 col-lg-8" style="text-align:center; font-size:1.3rem">
-                ${this.props.inforStudent.email}</p>
+                ${inforStudent.email}</p>
             </div>
 
         </div>
-    </div>
-</div>`
     
+</div>`
+
         appendTo($container, new Footer())
         var imported = document.createElement('script');
         imported.src = './assets/js/app.js'
@@ -191,7 +240,7 @@ export default class InforStudent extends BaseComponent {
 
     handleClickChosseFile = (e) => {
         let tmpState = this.state;
-        tmpState.nameImg = 'abcd'
+        
         let reader;
         let input = document.createElement('input');
         input.type = "file";
@@ -214,7 +263,7 @@ export default class InforStudent extends BaseComponent {
         let files = tmpState.files;
         let nameImg = tmpState.nameImg;
         let urlImg = tmpState.urlImg;
-        let id = this.props.inforStudent.id;
+        let id = tmpState.inforStudent.id;
         tmpState.upload = true
 
         uploadStorageImage(nameImg, urlImg, files, id);
@@ -222,6 +271,8 @@ export default class InforStudent extends BaseComponent {
         this.setState(tmpState);
 
     }
+
+
 
 
 }
