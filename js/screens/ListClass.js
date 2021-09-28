@@ -1,12 +1,12 @@
 import BaseComponent from "../BaseComponent.js";
 import Sidebar from "../components/Sidebar.js";
-import { appendTo,filterDate } from "../utils.js";
+import { appendTo, filterDate } from "../utils.js";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
 import Table from "../components/Table.js";
 import InputWrapper from "../components/InputWrapper.js";
 import FormUpdateClass from "./FormUpdateClass.js";
-import { addClass,updateClass,deleteClass,getAllClass } from "../models/user.js";
+import { addClass, updateClass, deleteClass, getAllClass, deleteStudent ,getAllStudent} from "../models/user.js";
 
 
 
@@ -25,8 +25,9 @@ export default class ListClass extends BaseComponent {
             allClass: [],
             search: '',
             sortValue: null,
-            rootAllClass:[]
-            
+            rootAllClass: [],
+            allStudent: [],
+
         }
     }
 
@@ -48,11 +49,18 @@ export default class ListClass extends BaseComponent {
                     let x = this.state
 
                     let data = snapshot.docs;
-                   let allClass = data.map((item) => {
-                        return item.data();
+
+                    let dataAllClass = [];
+
+                    data.map((item) => {
+
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllClass.push(obj);
+
+                        
                     })
-                    x.allClass=[...allClass];
-                    x.rootAllClass=[...allClass];
+                    x.allClass = [...dataAllClass];
+                    x.rootAllClass = [...dataAllClass];
                     this.setState(x);
 
                 })
@@ -76,18 +84,26 @@ export default class ListClass extends BaseComponent {
     }
 
     addClass = (value) => {
-        value.studyTime=filterDate(value.studyTime);
+        value.studyTime = filterDate(value.studyTime);
         addClass(value);
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('classes').onSnapshot(snapshot => {
-                    let x= this.state
-                    
-                    let data = snapshot.docs;
-                    x.allClass = data.map((item) => {
-                        return item.data();
-                    })
+                    let x = this.state
 
+                    let data = snapshot.docs;
+
+                    let dataAllClass = [];
+
+                    data.map((item) => {
+
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllClass.push(obj);
+
+                        
+                    })
+                    x.allClass = [...dataAllClass];
+                    x.rootAllClass = [...dataAllClass];
                     this.setState(x);
 
                 })
@@ -98,17 +114,36 @@ export default class ListClass extends BaseComponent {
 
     //Delete 
     handleDelete = (value) => {
+        let tmpState = this.state;
+        let allStudent= tmpState.allStudent;
+
+        allStudent.map((item,index) => {
+            if(item.className==value.name){
+                deleteStudent(item);
+            }
+        })
+
         deleteClass(value);
+        
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('classes').onSnapshot(snapshot => {
                     let x = this.state
-                    x.isDisplayForm = false;
-                    let data = snapshot.docs;
-                    x.allClass = data.map((item) => {
-                        return item.data();
-                    })
 
+                    let data = snapshot.docs;
+
+                    let dataAllClass = [];
+
+                    data.map((item) => {
+
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllClass.push(obj);
+
+                        
+                    })
+                    x.allClass = [...dataAllClass];
+                    x.rootAllClass = [...dataAllClass];
+                    x.isDisplayForm=false;
                     this.setState(x);
 
                 })
@@ -122,7 +157,7 @@ export default class ListClass extends BaseComponent {
         let tmpState = this.state;
 
         tmpState.search = fieldValue.trim();
-        let rootAllClass=tmpState.rootAllClass
+        let rootAllClass = tmpState.rootAllClass
         tmpState.allClass = [...rootAllClass];
         this.setState(tmpState);
         //console.log(this.state,1);
@@ -167,10 +202,11 @@ export default class ListClass extends BaseComponent {
 
     async componentDidMount() {
         let tmpState = this.state;
-        //let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
-        let allClass= await getAllClass();
-        tmpState.allClass=[...allClass];
-        tmpState.rootAllClass=[...allClass];
+        let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
+        //let allClass = await getAllClass();
+        tmpState.allClass = [...allClass];
+        tmpState.rootAllClass = [...allClass];
+        tmpState.allStudent=[...allStudent];
         this.setState(tmpState);
     }
 
@@ -327,7 +363,7 @@ export default class ListClass extends BaseComponent {
         //Add Class
         $button_add.onclick = this.handleClickAdd;
 
-        if(this.props.idUser=='FPO9ngD4KTf2VW3euMiXVOa651X2'){
+        if (this.props.idUser == 'FPO9ngD4KTf2VW3euMiXVOa651X2') {
             $div_column.appendChild($button_add);
         }
 
@@ -411,20 +447,20 @@ export default class ListClass extends BaseComponent {
         let $div_drop_menu = document.createElement('div')
         $div_drop_menu.classList.add('dropdown-menu', 'dropdown-menu-right', 'dropdown-menu-lg-left');
         let $a_sort_az = document.createElement('p');
-        $a_sort_az.classList.add('dropdown-item','p-sort');
+        $a_sort_az.classList.add('dropdown-item', 'p-sort');
         $a_sort_az.innerHTML += 'TÊN : A->Z';
 
-        $a_sort_az.onclick=()=>{
+        $a_sort_az.onclick = () => {
             this.handleSort(1);
-            
+
         }
 
         let $a_sort_za = document.createElement('p');
-        $a_sort_za.classList.add('dropdown-item','p-sort');
+        $a_sort_za.classList.add('dropdown-item', 'p-sort');
         $a_sort_za.innerHTML += 'TÊN : Z->A';
-        $a_sort_za.onclick=()=>{
+        $a_sort_za.onclick = () => {
             this.handleSort(-1);
-            
+
         }
 
 

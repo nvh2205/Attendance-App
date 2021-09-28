@@ -18,7 +18,7 @@ export default class Header extends BaseComponent {
             </nav>
             
             <img src="assets/images/logo-icon.png" class="logo-icon-2" alt="" />
-            <h1 class="">App Support</h1>
+            <h3 class="ml-5">Attendance App</h3>
         </header>
         
         `

@@ -6,7 +6,7 @@ import Footer from "../components/Footer.js";
 import TableStudent from "../components/TableStudent.js";
 import InputWrapper from "../components/InputWrapper.js";
 import FormUpdateStudent from "./FormUpdateStudent.js";
-import { getAllStudent, getAllClass, updateStudent,register,deleteStudent,addUser } from "../models/user.js";
+import { getAllStudent, getAllClass, updateStudent, register, deleteStudent, addUser } from "../models/user.js";
 
 
 
@@ -20,10 +20,10 @@ export default class ListStudent_copy extends BaseComponent {
             searchValue: '',
             dataUpdate: {},
             isDisplayForm: false,
-            allStudent:[],
-            allClass:[],
-            search:'',
-            sortValue:null,
+            allStudent: [],
+            allClass: [],
+            search: '',
+            sortValue: null,
             rootAllStudent: []
         }
     }
@@ -38,18 +38,27 @@ export default class ListStudent_copy extends BaseComponent {
         //console.log(this.state);
     }
 
-    handleUpdateStudent =  (value) => {
-        console.log(value,'update');
+    handleUpdateStudent = (value) => {
+        //console.log(value, 'update');
         updateStudent(value);
-         auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('users').onSnapshot(snapshot => {
-                    let x= this.state
-                    
+                    let x = this.state
+                    x.isDisplayForm = false;
                     let data = snapshot.docs;
-                    x.allStudent = data.map((item) => {
-                        return item.data();
+                    
+                    
+                    let dataAllStudent = [];
+
+                     data.map((item) => {
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllStudent.push(obj);
                     })
+
+                    x.allStudent =[...dataAllStudent];
+                    x.rootAllStudent= [...dataAllStudent];
+
 
                     this.setState(x);
 
@@ -58,7 +67,7 @@ export default class ListStudent_copy extends BaseComponent {
         });
     }
 
-    handleClickAdd=()=>{
+    handleClickAdd = () => {
         let tmpState = this.state;
         tmpState.isDisplayForm = true;
         tmpState.dataUpdate = {};
@@ -66,24 +75,33 @@ export default class ListStudent_copy extends BaseComponent {
     }
 
     //Close form when clicked
-    closeForm = ()=>{
-        let tmpState= this.state;
-       // tmpState.dataUpdate=null;
-        tmpState.isDisplayForm=false;
+    closeForm = () => {
+        let tmpState = this.state;
+        // tmpState.dataUpdate=null;
+        tmpState.isDisplayForm = false;
         this.setState(tmpState);
     }
 
-    addStudent=(value)=>{
-        addUser(value.email,value.password, value.className,value.yearOfBirth,value.name,value.attendance,value.noAttendance);
+    addStudent = (value) => {
+        addUser(value.email, value.password, value.className, value.yearOfBirth, value.name, value.attendance, value.noAttendance);
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('users').onSnapshot(snapshot => {
-                    let x= this.state
-                    
+                    let x = this.state
+
                     let data = snapshot.docs;
-                    x.allStudent = data.map((item) => {
-                        return item.data();
+
+                    x.isDisplayForm = false;
+
+                    let dataAllStudent = [];
+
+                     data.map((item) => {
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllStudent.push(obj);
                     })
+
+                    x.allStudent =[...dataAllStudent];
+                    x.rootAllStudent= [...dataAllStudent];
 
                     this.setState(x);
 
@@ -96,18 +114,25 @@ export default class ListStudent_copy extends BaseComponent {
     }
 
     //Delete 
-    handleDelete=(value)=>{
+    handleDelete = (value) => {
         deleteStudent(value);
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('users').onSnapshot(snapshot => {
-                    let x= this.state
-                    x.isDisplayForm=false;
+                    let x = this.state
+                    x.isDisplayForm = false;
                     let data = snapshot.docs;
-                    x.allStudent = data.map((item) => {
-                        return item.data();
+
+                    let dataAllStudent = [];
+
+                     data.map((item) => {
+                        const obj = { ...item.data(), id: item.id }
+                        dataAllStudent.push(obj);
                     })
-                 
+
+                    x.allStudent =[...dataAllStudent];
+                    x.rootAllStudent= [...dataAllStudent];
+
                     this.setState(x);
 
                 })
@@ -120,46 +145,46 @@ export default class ListStudent_copy extends BaseComponent {
         //console.log('fieldName' + ' = ' + fieldValue);
         let tmpState = this.state;
 
-        tmpState.search= fieldValue.trim();
-        let rootAllStudent=tmpState.rootAllStudent
-        tmpState.allStudent=[...rootAllStudent]
+        tmpState.search = fieldValue.trim();
+        let rootAllStudent = tmpState.rootAllStudent
+        tmpState.allStudent = [...rootAllStudent]
         this.setState(tmpState);
         //console.log(this.state,1);
-       
+
     }
 
     //Chuyển sang create khi cancle
-    clickCancel=()=>{
+    clickCancel = () => {
         let tmpState = this.state;
         tmpState.isDisplayForm = true;
         tmpState.dataUpdate = {};
         this.setState(tmpState);
     }
 
-    handleClickSearch=()=>{
+    handleClickSearch = () => {
         let tmpState = this.state;
 
-        let arrSearch=[]
+        let arrSearch = []
 
-        tmpState.allStudent.forEach((item,index)=>{
+        tmpState.allStudent.forEach((item, index) => {
             if (item.name.toUpperCase().includes(tmpState.search.toUpperCase().trim())) {
                 arrSearch.push(item);
             }
         })
-       
-        tmpState.allStudent=arrSearch;
+
+        tmpState.allStudent = arrSearch;
         this.setState(tmpState);
     }
 
     //sort
-    handleSort=(value)=>{
+    handleSort = (value) => {
         let tmpState = this.state;
-        tmpState.allStudent.sort((a,b)=>{
-            if(a.name > b.name) return value;
-            else if(a.name < b.name) return -value;
+        tmpState.allStudent.sort((a, b) => {
+            if (a.name > b.name) return value;
+            else if (a.name < b.name) return -value;
             else return 0;
         })
-        tmpState.sortValue=value;
+        tmpState.sortValue = value;
         this.setState(tmpState);
     }
 
@@ -167,9 +192,9 @@ export default class ListStudent_copy extends BaseComponent {
         let tmpState = this.state;
         let [allClass, allStudent] = await Promise.all([getAllClass(), getAllStudent()]);
         //let allClass= await getAllClass();
-        tmpState.allClass=[...allClass];
-        tmpState.allStudent=[...allStudent];
-        tmpState.rootAllStudent=[...allStudent];
+        tmpState.allClass = [...allClass];
+        tmpState.allStudent = [...allStudent];
+        tmpState.rootAllStudent = [...allStudent];
         this.setState(tmpState);
     }
 
@@ -183,7 +208,7 @@ export default class ListStudent_copy extends BaseComponent {
         appendTo($container, new Sidebar());
         appendTo($container, new Header());
 
-      
+
         // let $moadl_update = new ModalUpdateStudent(
         //     {
         //         dataUpdate: this.state.dataUpdate,
@@ -209,7 +234,7 @@ export default class ListStudent_copy extends BaseComponent {
         $page_content_wrapper.appendChild($page_content);
 
         let $page_breadcrumb = document.createElement('div');
-        $page_breadcrumb.classList.add('page-breadcrumb',  'd-md-flex', 'justify-content-center', 'align-items-center', 'mb-3');
+        $page_breadcrumb.classList.add('page-breadcrumb', 'd-md-flex', 'justify-content-center', 'align-items-center', 'mb-3');
 
         $page_content.appendChild($page_breadcrumb);
 
@@ -234,32 +259,32 @@ export default class ListStudent_copy extends BaseComponent {
         $div_form.className = 'col-12 col-lg-4';
 
 
-        let $form_update=null;
-        if(this.state.dataUpdate['id']){
-            
+        let $form_update = null;
+        if (this.state.dataUpdate['id']) {
+
             //Update
             $form_update = new FormUpdateStudent({
                 dataUpdate: this.state.dataUpdate,
                 allClass: this.state.allClass,
                 handleUpdateStudent: this.handleUpdateStudent,
                 closeForm: this.closeForm,
-                title:'Update',
-                clickCancel:this.clickCancel
+                title: 'Update',
+                clickCancel: this.clickCancel
             })
-               //Create   a new
-           
+            //Create   a new
+
         }
-        else{
+        else {
             $form_update = new FormUpdateStudent({
                 allClass: this.state.allClass,
-                addStudent:this.addStudent,
+                addStudent: this.addStudent,
                 closeForm: this.closeForm,
-                title:'Create',
-                clickCancel:this.clickCancel
-                
+                title: 'Create',
+                clickCancel: this.clickCancel
+
             })
         }
-        
+
 
         if (display_form === true) {
             $row_form.appendChild($div_form);
@@ -323,9 +348,9 @@ export default class ListStudent_copy extends BaseComponent {
         $button_add.innerHTML += 'Thêm Học Sinh'
 
         //Add student
-        $button_add.onclick=this.handleClickAdd;
+        $button_add.onclick = this.handleClickAdd;
 
-        if(this.props.idUser=='FPO9ngD4KTf2VW3euMiXVOa651X2'){
+        if (this.props.idUser == 'FPO9ngD4KTf2VW3euMiXVOa651X2') {
             $div_column.appendChild($button_add);
         }
 
@@ -365,8 +390,8 @@ export default class ListStudent_copy extends BaseComponent {
         $i_search.classList.add('fadeIn', 'animated', 'bx', 'bx-search', 'mr-2');
         $button_search.appendChild($i_search);
         $button_search.innerHTML += 'Tìm';
-        
-        $button_search.onclick=()=>{
+
+        $button_search.onclick = () => {
             this.handleClickSearch();
         }
 
@@ -403,35 +428,35 @@ export default class ListStudent_copy extends BaseComponent {
 
         $div_btn_group_sort.appendChild($button_drop);
 
-        let $i_sort= document.createElement('i');
-        $i_sort.className='fadeIn animated bx bx-check ml-1';
+        let $i_sort = document.createElement('i');
+        $i_sort.className = 'fadeIn animated bx bx-check ml-1';
 
         let $div_drop_menu = document.createElement('div')
         $div_drop_menu.classList.add('dropdown-menu', 'dropdown-menu-right', 'dropdown-menu-lg-left');
         let $a_sort_az = document.createElement('p');
-        $a_sort_az.classList.add('dropdown-item','p-sort');
+        $a_sort_az.classList.add('dropdown-item', 'p-sort');
         $a_sort_az.innerHTML += 'TÊN : A->Z';
 
-        $a_sort_az.onclick=()=>{
+        $a_sort_az.onclick = () => {
             this.handleSort(1);
-            
+
         }
 
         let $a_sort_za = document.createElement('p');
-        $a_sort_za.classList.add('dropdown-item','p-sort');
+        $a_sort_za.classList.add('dropdown-item', 'p-sort');
         $a_sort_za.innerHTML += 'TÊN : Z->A';
-        $a_sort_za.onclick=()=>{
+        $a_sort_za.onclick = () => {
             this.handleSort(-1);
-            
+
         }
 
-        
-        if(this.state.sortValue==1){
-            
+
+        if (this.state.sortValue == 1) {
+
             $a_sort_az.appendChild($i_sort)
-        }else if(this.state.sortValue==-1){
+        } else if (this.state.sortValue == -1) {
             $a_sort_za.appendChild($i_sort);
-        }   
+        }
 
         $div_drop_menu.appendChild($a_sort_az);
         $div_drop_menu.appendChild($a_sort_za);
@@ -445,7 +470,7 @@ export default class ListStudent_copy extends BaseComponent {
             thElement: this.state.thElement,
             tdElement: this.state.allStudent,
             handleSelectStudent: this.handleSelectStudent,
-            handleDelete:this.handleDelete
+            handleDelete: this.handleDelete
 
         });
 
@@ -454,10 +479,10 @@ export default class ListStudent_copy extends BaseComponent {
 
 
 
-        var imported= document.createElement('script');
-        imported.src='./assets/js/app.js'
+        var imported = document.createElement('script');
+        imported.src = './assets/js/app.js'
         document.body.appendChild(imported)
-        
+
 
 
         appendTo($container, new Footer())

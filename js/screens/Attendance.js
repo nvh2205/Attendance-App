@@ -414,7 +414,7 @@ export default class Attendance extends BaseComponent {
         var imported = document.createElement('script');
         imported.src = './assets/js/app.js'
         document.body.appendChild(imported)
-
+        appendTo($container, new Footer())
 
         return $container;
 

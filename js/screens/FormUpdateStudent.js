@@ -21,6 +21,7 @@ export default class FormUpdateStudent extends BaseComponent {
                 confirmPassword: '',
                 attendance: this.props.dataUpdate ? this.props.dataUpdate.attendance : [],
                 noAttendance: this.props.dataUpdate ? this.props.dataUpdate.noAttendance : [],
+                rootClassName: `${this.props.dataUpdate ? this.props.dataUpdate.className : ''}`,
 
             },
             err: {
@@ -290,7 +291,30 @@ export default class FormUpdateStudent extends BaseComponent {
                 this.props.addStudent(data);
             }
             else {
-                this.props.handleUpdateStudent(data);
+
+                if (data.className != data.rootClassName) {
+                    let indexClassName = this.props.allClass.findIndex((item) => item.name == data.className);
+                    let time_current = new Date();
+                    time_current = time_current.getTime();
+                    data.noAttendance=[];
+                    this.props.allClass[indexClassName].studyTime.map((item) => {
+                        let time_study = new Date(item);
+                        time_study = time_study.getTime();
+                        if (time_study < time_current) {
+                            let obj = {};
+                            obj.content = '';
+                            obj.date = item
+                            data.noAttendance.push(obj);
+                        }
+                    })
+                    data.attendance=[];
+                    this.props.handleUpdateStudent(data);
+                }else{
+
+                    this.props.handleUpdateStudent(data);
+
+                }   
+
 
             }
             this.props.closeForm();

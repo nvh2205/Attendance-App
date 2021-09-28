@@ -81,7 +81,7 @@ body {
 .logo-text {
 	color: #404142;
 
-	font-size: 25px;
+	font-size: 17px;
 
 	margin-bottom: 0;
 
@@ -269,7 +269,7 @@ body {
 	box-shadow: none;
 }
 
-.top-header h1 {
+.top-header h3 {
 	text-align: center;
 
 	letter-spacing: 10.5px;

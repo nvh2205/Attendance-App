@@ -10,7 +10,7 @@ export default class Footer extends BaseComponent {
         let $footer = document.createElement("div");
         $footer.innerHTML=`	
         <div class="footer">
-        <p class="mb-0" >App| Developed By Group 5: <a href="#" target="_blank">vv....</a>
+        <p class="mb-0" >App| Developed By Group 5: <a href="/index.html#/index" >vv....</a>
         </p>
     </div>
         
