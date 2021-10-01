@@ -43,7 +43,7 @@ export default class FormUpdateStudent extends BaseComponent {
         let tmpState = this.state;
 
         if(fieldName != 'className'){
-            console.log(fieldName + ' = ' + fieldValue)
+            //console.log(fieldName + ' = ' + fieldValue)
             tmpState.data[fieldName] = fieldValue.trim();
 
         }else{
