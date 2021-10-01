@@ -136,7 +136,7 @@ export default class LogInScreen extends BaseComponent {
 
         let $btn = document.createElement('button');
         $btn.classList.add('btn', 'btn-primary', 'btn-block');
-        $btn.innerHTML = "Register";
+        $btn.innerHTML = "Log In ";
 
         let $form = document.createElement('form');
         $form.classList.add('card-body')

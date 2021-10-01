@@ -42,9 +42,16 @@ export default class FormUpdateStudent extends BaseComponent {
         //console.log(fieldName + ' = ' + fieldValue);
         let tmpState = this.state;
 
-        tmpState.data[fieldName] = fieldValue.trim();
+        if(fieldName != 'className'){
+            console.log(fieldName + ' = ' + fieldValue)
+            tmpState.data[fieldName] = fieldValue.trim();
+
+        }else{
+            tmpState.data[fieldName] = fieldValue;
+        }
 
 
+        //console.log(tmpState.data[fieldName])
         this.setState(tmpState);
         //console.log(this.state,1);
 
@@ -293,7 +300,9 @@ export default class FormUpdateStudent extends BaseComponent {
             else {
 
                 if (data.className != data.rootClassName) {
-                    let indexClassName = this.props.allClass.findIndex((item) => item.name == data.className);
+                    let indexClassName = this.props.allClass.findIndex((item) =>{ 
+                              
+                       return item.name == data.className});
                     let time_current = new Date();
                     time_current = time_current.getTime();
                     data.noAttendance=[];
@@ -308,7 +317,7 @@ export default class FormUpdateStudent extends BaseComponent {
                         }
                     })
                     data.attendance=[];
-                    this.props.handleUpdateStudent(data);
+                   this.props.handleUpdateStudent(data);
                 }else{
 
                     this.props.handleUpdateStudent(data);

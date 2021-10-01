@@ -37,8 +37,10 @@ export default class SelectWrapper extends BaseComponent {
 
         $select.innerHTML = `<option value="Chọn lớp đăng kí">Chọn lớp học bạn đăng kí</option>`
         this.props.option.forEach((item,index)=>{
-            $select.innerHTML+=`<option value=${item.name}>${item.name}</option>`
+            
+            $select.innerHTML+=`<option>${item.name}</option>`
         })
+
 
         $select.value = this.props.value;
         $select.onchange = this.props.onchange;

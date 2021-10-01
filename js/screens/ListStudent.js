@@ -83,7 +83,7 @@ export default class ListStudent_copy extends BaseComponent {
     }
 
     addStudent = (value) => {
-        addUser(value.email, value.password, value.className, value.yearOfBirth, value.name, value.attendance, value.noAttendance);
+        add(value.email, value.password, value.className, value.yearOfBirth, value.name, value.attendance, value.noAttendance);
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection('users').onSnapshot(snapshot => {
