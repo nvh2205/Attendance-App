@@ -174,18 +174,30 @@ export const deleteClass = async (deleteClass) => {
 
 //add User 
 export const addUser = async (email, password, OptionClass, yearOfBirth, name, attendance, noAttendance)=>{
-    await db.collection('users').add({
-        name: name,
-        email: email,
-        className: OptionClass,
-        yearOfBirth: yearOfBirth,
-        attendance: attendance,
-        noAttendance: noAttendance,
-    })
-    .catch( (e)=> {
+
+    let allStudent = await getAllStudent();
+
+    let indexStudent = allStudent.findIndex((item)=>item.email==email);
+
+    try {
+        if(indexStudent==-1){
+            await db.collection('users').add({
+                name: name,
+                email: email,
+                className: OptionClass,
+                yearOfBirth: yearOfBirth,
+                attendance: attendance,
+                noAttendance: noAttendance,
+            })
+        }else{
+            throw  $('#exampleModal3').modal('show');
+        }
+    }catch(e) {
         $('#exampleModal3').modal('show');
         console.log('error',e.message);
-    })
+    }
+
+
 }
 
 

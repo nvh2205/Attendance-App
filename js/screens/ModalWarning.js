@@ -38,7 +38,7 @@ export default class ModalWarning extends BaseComponent {
 
        let $h5_title=document.createElement("h5");
        $h5_title.className='modal-title';
-        $h5_title.innerHTML+='Lỗi rồi';
+        $h5_title.innerHTML+=this.props.contenHeader?`${this.props.contenHeader}`:'Lỗi rồi';
 
         $div_madal_header.appendChild($h5_title);
 

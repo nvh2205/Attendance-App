@@ -50,7 +50,7 @@ router.on('/index', function () {
     
 
     $app.innerHTML = '';
-    appendTo($app, new InforStudent(),new ModalWarning({content:"Upload file successfully"}));
+    appendTo($app, new InforStudent(),new ModalWarning({content:"Upload file successfully",contenHeader:"Success"}));
 }).resolve();
 
 

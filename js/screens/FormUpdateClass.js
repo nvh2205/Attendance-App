@@ -108,7 +108,7 @@ export default class FormUpdateClass extends BaseComponent {
         let _name = new InputWrapper({
             addClassInput: 'form-control radius-30',
             label: 'Name--',
-            placeholder: 'Name Student: ',
+            placeholder: 'Name Class: ',
             type: 'text',
             value: this.state.data.name,
             error: this.state.err.name,
@@ -282,9 +282,18 @@ export default class FormUpdateClass extends BaseComponent {
             isPassed = false
         }
 
+        data.studyTime.map((item,index) => {
+            if(item.trim() == '') {
+                errors.studyTime[index]='Bạn ko được để trống lịch học';
+                isPassed = false
+            }else{
+                errors.studyTime[index]='';
+            }
+        })
+
         if(data.studyTime.length == 0) {
             isPassed = false
-            alert('Ban Phai tron lich hoc')
+            alert('Bạn hãy chọn lịch học')
         }
 
         if (isPassed) {
